@@ -1,0 +1,121 @@
+﻿@model User
+@{
+    ViewData["Title"] = "UserProfile";
+}
+<input type="hidden" id="MessageBox" value="@TempData["MessageBox"]" />
+<section style="background-color: #eee;">
+    <div class="container py-5">
+        <div class="row">
+            <div class="col">
+                <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item active" aria-current="page">User Profile</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card mb-4">
+                    <div class="card-body text-center">
+                        <img src="~/img/defaultImagePerson.png" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                        <h5 class="my-3">@Model.Fullname</h5>
+                        <p class="text-muted mb-1">@Model.UserName</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Full Name</p>
+                            </div>
+                            <div class="col-sm-6">
+                                <p class="text-muted mb-0">@Model.Fullname</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Email</p>
+                            </div>
+                            <div class="col-sm-6">
+                                <p class="text-muted mb-0">@Model.Email</p>
+                            </div>
+                            <a asp-controller="Account" asp-action="ChangeEmail" asp-route-username="@Model.UserName">
+                                Change
+                            </a>
+                        </div>
+                        <hr>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Username</p>
+                            </div>
+                            <div class="col-sm-6">
+                                <p class="text-muted mb-0">@Model.UserName</p>
+                            </div>
+                            <a asp-controller="Account" asp-action="ChangeUsername" asp-route-username="@Model.UserName">
+                                Change
+                            </a>
+                        </div>
+                        <hr>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Password</p>
+                            </div>
+                            <a asp-controller="Account" asp-action="ChangePassword" asp-route-username="@Model.UserName">
+                                Change
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            var message = $("#MessageBox").val();
+            switch (message) {
+                case "ChangePassword":
+                    var type = "success";
+                    var message = "You have successfully Change password.";
+                    break;
+                case "ChangeEmail":
+                    var type = "warning";
+                    var message = "We sent you message to your new E-mail address.Please confirm for change Succesfully";
+                    break;
+                case "ConfirmChangeEmail":
+                    var type = "success";
+                    var message = "Your Email change Succesfully";
+                    break;
+                default:
+            }
+
+            Command: toastr[type](message)
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "6000",
+                "hideDuration": "6000",
+                "timeOut": "10000",
+                "extendedTimeOut": "10000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+        })
+
+    </script>
+}

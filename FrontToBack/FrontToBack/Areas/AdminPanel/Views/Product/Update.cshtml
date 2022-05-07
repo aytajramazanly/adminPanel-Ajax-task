@@ -1,0 +1,118 @@
+﻿@model Product
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-10 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Create Product</h4>
+                <form class="forms-sample" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label asp-for="Name">Name</label>
+                        <input class="form-control text-white " placeholder="Product Name" asp-for="Name">
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <img class="card-img-top" src="~/img/@Model.Image" alt="Card image cap" style="max-width: 200px" id="existPhoto">
+                        <i class="mdi mdi-arrow-right-bold d-none" id="arrowIcon"></i>
+                        <img class="card-img-top d-none" src="" alt="Card image cap" style="max-width: 200px" id="uploadPhoto">
+                        <input asp-for="Photo" type="file" class="file-upload-default d-none " id="uploadImg">
+                        <div class="input-group col-xs-12 mt-2 ms-2">
+                            <button class="file-upload-browse btn btn-inverse-primary btn-md " id="uploadBtn" type="button">Change </button>
+
+                            <a class="file-upload-browse btn btn-inverse-danger btn-md deleteBtn @(ViewBag.DefaultImg==Model.Image ? "disabled" : "")" type="button" asp-action="DeletePhoto" asp-route-id="@Model.Id">Delete</a>
+                        </div>
+                        <span asp-validation-for="Photo" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Description">Description</label>
+                        <input class="form-control text-white " placeholder="Description" asp-for="Description">
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Price">Price</label>
+                        <input type="number" class="form-control text-white " placeholder="Price" asp-for="Price">
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" data-select2-id="7">
+                        <label asp-for="CategoryId">Category</label>
+                        <select asp-for="CategoryId" asp-items="@(new SelectList(ViewBag.Categories, nameof(Category.Id), nameof(Category.Name)))" class="js-example-basic-single select2-hidden-accessible" style="width:100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
+                            <option>Please select one</option>
+                        </select>
+                        <span asp-validation-for="Category" class="text-danger"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary me-2">Submit</button>
+                    <a class="btn btn-dark" asp-action="Index">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <partial name="_ValidationPartial" />
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(document).ready(function () {
+            $("#uploadBtn").click(function myfunction() {
+                $("#uploadImg").click();
+            })
+            $("#uploadImg").change(function (e) {
+                const { files } = e.target
+                for (const file of files) {
+                    const fileReader = new FileReader()
+
+                    fileReader.onloadend = function (e) {
+                        const { result } = e.target
+                        if ($("#existPhoto").attr("src") === "/img/defaultImagePerson.png") {
+                            $("#existPhoto").attr("src", result);
+                        }
+                        else {
+                            $("#existPhoto").css({ opacity: 0.3 });
+                            $("#arrowIcon").removeClass("d-none");
+                            $("#uploadPhoto").removeClass("d-none");
+                            $("#uploadPhoto").attr("src", result);
+                        }
+                    }
+                    fileReader.readAsDataURL(file)
+                }
+            })
+            $(".deleteBtn").click(function (e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        let link = $(this).attr("href");
+                        console.log(link);
+                        fetch(link).then(response => response.json()).then(data => {
+                            if (data.status == 200) {
+                                swal.fire(
+                                    'deleted!',
+                                    'your file has been deleted.',
+                                    'success'
+                                )
+                                setTimeout(() => { window.location.pathname = 'AdminPanel/Product' }, 1500);
+                            }
+                            else {
+                                swal.fire(
+                                    'failed!',
+                                    'your file can not deleted.',
+                                    'error'
+                                )
+                            }
+                        })
+                    }
+                })
+            })
+        });
+    </script>
+}
+

@@ -1,4 +1,5 @@
 ﻿using FrontToBack.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FrontToBack.DataAccessLayer
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<User>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options):base(options)
         {
@@ -26,5 +27,6 @@ namespace FrontToBack.DataAccessLayer
         public DbSet<ExpertsComment> ExpertsComments { get; set; }
         public DbSet<InstagramPost> InstagramPosts { get; set; }
         public DbSet<Bio> Bios { get; set; }
+        public DbSet<Position> Positions { get; set; }
     }
 }

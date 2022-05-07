@@ -24,6 +24,7 @@ namespace FrontToBack.Controllers
 
         public IActionResult Index()
         {
+            ViewBag.ProductsCount = _productsCount;
             return View(new HomeVM
             {
                 Slider = _dbContext.Sliders.SingleOrDefault(),
@@ -33,12 +34,13 @@ namespace FrontToBack.Controllers
                 About = _dbContext.Abouts.SingleOrDefault(),
                 Advantages = _dbContext.Advantages.ToList(),
                 ExpertsHeading = _dbContext.ExpertsHeadings.SingleOrDefault(),
-                Experts = _dbContext.Experts.ToList(),
+                Experts = _dbContext.Experts.Include(x=>x.Position).ToList(),
                 Subscribe = _dbContext.Subscribes.SingleOrDefault(),
                 BlogHeading = _dbContext.BlogHeadings.SingleOrDefault(),
                 BlogPosts = _dbContext.BlogPosts.ToList(),
                 ExpertsComments = _dbContext.ExpertsComments.Include(x => x.Expert).ToList(),
                 InstagramPosts = _dbContext.InstagramPosts.ToList(),
+                Positions=_dbContext.Positions.ToList()
             });
         }
 

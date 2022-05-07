@@ -3,8 +3,10 @@ $(document).ready(function () {
     let skip = 4
     let scroll = 500
     let bool = true
-    $(window).on('scroll', function () {
+    $(window).scroll(function () {
         if ($(window).scrollTop() >= scroll && bool) {
+            console.log("w");
+            scroll += 350;
             $.ajax({
                 type: "GET",
                 url: "/Home/Load?skip=" + skip,
@@ -12,16 +14,14 @@ $(document).ready(function () {
 
                     $("#productsRow").append(res);
                     skip += 4;
-                    scroll+=400
                     let productsCount = $("#productsCount").val();
-
                     if (skip >= productsCount) {
                         bool = false
                     }
                 }
             });
         }
-    });
+    })
    
     $(document).on('keyup', '#input-search', function () {
         let searchedProduct = $(this).val()

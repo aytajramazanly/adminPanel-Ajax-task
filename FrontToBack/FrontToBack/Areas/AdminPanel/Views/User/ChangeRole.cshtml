@@ -1,0 +1,32 @@
+﻿@model ChangeRoleVM
+
+@{
+    ViewData["Title"] = "ChangeRole";
+
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-10 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Create Product</h4>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <form class="forms-sample" method="post" name="roleVMs" id="@Model">
+                    <input type="hidden" asp-for="@Model.Username" />
+                    <input type="hidden" asp-for="CurrrentRole"/>
+                    <div class="form-group" data-select2-id="7">
+                        <label asp-for="@Model.RoleId">Role</label>
+                        <span class="text-succes">Current Role - @Model.CurrrentRole</span>
+                        <select asp-for="@Model.RoleId" asp-items="@(new SelectList(Model.Roles, nameof(IdentityRole.Id), nameof(IdentityRole.Name)))" class="js-example-basic-single select2-hidden-accessible" style="width:100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
+                            <option value="0">Please select one</option>
+                        </select>
+                        <span asp-validation-for="@Model.RoleId" class="text-danger"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary me-2">Submit</button>
+                    <a class="btn btn-dark" asp-action="Index">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -5,7 +5,7 @@
 }
 
 <!-- SLIDER START -->
-
+<input type="hidden" id="MessageBox" value="@TempData["MessageBox"]" />
 <section id="slider">
     <div class="owl-carousel slider">
 
@@ -69,26 +69,6 @@
         <div class="row" id="productsRow">
             <input type="hidden" value="@ViewBag.ProductsCount" id="productsCount" />
             <partial name="_ProductPartial" model="homeVM.Products" />
-            @*@foreach (var product in homeVM.Products)
-        {
-            <div class="col-sm-6 col-md-4 col-lg-3 mt-3">
-                <div class="product-item text-center" data-id="@product.Category.Name.ToLower()">
-                    <div class="img">
-                        <a href="">
-                            <img src="~/img/@product.Image" class="img-fluid" alt="">
-                        </a>
-                    </div>
-                    <div class="title mt-3">
-                        <h6>@product.Name</h6>
-                    </div>
-                    <div class="price">
-                        <span class="text-black-50">Add to cart</span>
-                        <span class="text-black-50">$@product.Price</span>
-                    </div>
-                </div>
-            </div>
-        }*@
-
         </div>
     </div>
 </section>
@@ -110,7 +90,7 @@
             <div class="col-lg-6">
                 <div class="about-text mt-5 mt-lg-0 px-lg-5">
                     @Html.Raw(homeVM.About.Title)
-                    <p class="py-3"@homeVM.About.Subtitle</p>
+                    <p class="py-3" @homeVM.About.Subtitle</p>
                     <ul class="list-unstyled">
                         @foreach (var item in homeVM.Advantages)
                         {
@@ -135,7 +115,7 @@
                 <div class="section-title">
                     <h1>@homeVM.ExpertsHeading.Title</h1>
                     <p class="text-black-50">
-                       @homeVM.ExpertsHeading.SubTitle
+                        @homeVM.ExpertsHeading.SubTitle
                     </p>
                 </div>
             </div>
@@ -150,7 +130,7 @@
                         </div>
                         <div class="text mt-3">
                             <h6>@expert.Name.ToUpper() @expert.Surname.ToUpper()</h6>
-                            <p class="text-black-50">@expert.Field</p>
+                            <p class="text-black-50">@expert.Position.Name.ToUpper()</p>
                         </div>
                     </div>
                 </div>
@@ -210,7 +190,7 @@
                         <div class="text mt-3 text-center px-5">
                             <h5>@item.Title</h5>
                             <p class="text-black-50">
-                               @item.Subtitle
+                                @item.Subtitle
                             </p>
                         </div>
                     </div>
@@ -240,12 +220,12 @@
                                 <div class="text text-muted pt-3 pb-5">
                                     <i>
                                         @comment.Comment
-                                       
+
                                     </i>
                                 </div>
                                 <div class="author">
                                     <h6>@comment.Expert.Name @comment.Expert.Surname</h6>
-                                    <p class="text-black-50">@comment.Expert.Field</p>
+                                    <p class="text-black-50">@comment.Expert.Position.Name.ToUpper()</p>
                                 </div>
                             </div>
                         </div>
@@ -272,3 +252,49 @@
 </section>
 
 <!-- INSTAGRAM END -->
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            var message = $("#MessageBox").val();
+            switch (message) {
+                case "Register":
+                    var type = "success";
+                    var message = "You have successfully registered. Please confirm your e-mail address to login.";
+                    break;
+                case "ConfirmEmail":
+                    var type = "success";
+                    var message = "You have successfully Confirm Email.Welcome";
+                    break;
+                case "ForgotPassword":
+                    var type = "success";
+                    var message = "We sent you E-mail for reset password.Please check your Email";
+                    break;
+                case "ChangeEmail":
+                    var type = "warning";
+                    var message = "We sent you message to your new E-mail address.Please confirm for change Succesfully";
+                    break;
+                default:
+            }
+
+            Command: toastr[type](message)
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "6000",
+                "hideDuration": "6000",
+                "timeOut": "10000",
+                "extendedTimeOut": "10000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+        })
+
+    </script>
+}

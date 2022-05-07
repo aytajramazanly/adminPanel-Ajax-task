@@ -21,5 +21,6 @@ namespace FrontToBack.ViewModels
         public List<BlogPost> BlogPosts { get; set; }
         public List<ExpertsComment> ExpertsComments { get; set; }
         public List<InstagramPost> InstagramPosts { get; set; }
+        public List<Position> Positions { get; set; }
     }
 }
